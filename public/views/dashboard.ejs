@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Model Marketplace Dashboard</title>
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../dashboard.css">
     <link href="../logo.jpg" rel="icon" type="image/jpg" style="border-radius: 50%;">
 </head>
 <body>
@@ -26,7 +27,17 @@
         <main class="dashboard-content">
             <section class="welcome-section">
                 <h2 id="welcome-message">Welcome!</h2>
-                <p>Browse some of AI Models:</p>
+                <p>Browse some of the AI Models:</p>
+            </section>
+            <section class="search-section">
+                <input type="text" id="search-bar" placeholder="Search models..." />
+                <select id="type-filter">
+                    <option value="all">All Types</option>
+                    <option value="vision">Vision</option>
+                    <option value="text">Text</option>
+                    <option value="data">Data</option>
+                </select>
+                <button id="filter-btn">Filter</button>
             </section>
             <section class="models-section">
                 <!-- AI Models Display -->
@@ -126,6 +137,7 @@
             <p>&copy; 2025 AI Model Marketplace. All rights reserved.</p>
         </footer>
     </div>
+    <script async defer src="../render.js"></script>
     <script>
         const userName = '<%= userName %>';
         document.getElementById('welcome-message').innerText = `Welcome, ${userName}!`;
