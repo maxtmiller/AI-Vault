@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Function to extract models dynamically from the DOM
     function getModelsFromDOM() {
         const cards = document.querySelectorAll(".model-card");
         return Array.from(cards).map(card => {
@@ -10,10 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Function to render models into the DOM
+    const allModels = getModelsFromDOM();
+
     function renderModels(filteredModels) {
-        const container = document.getElementById("models-container");
-        container.innerHTML = ""; // Clear existing cards
+        const container = document.getElementById("models-section");
+        container.innerHTML = ""; // Clear existing models
 
         if (filteredModels.length === 0) {
             container.innerHTML = "<p>No models found.</p>";
@@ -33,32 +33,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Utility function to capitalize the first letter
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // Function to filter models
     function filterModels() {
         const searchQuery = document.getElementById("search-bar").value.toLowerCase();
         const typeFilter = document.getElementById("type-filter").value;
 
-        const allModels = getModelsFromDOM();
+        // const allModels = getModelsFromDOM();
+
+        console.log(allModels);
+
+        // Filter logic
         const filtered = allModels.filter(model => {
             const matchesSearch = model.name.toLowerCase().includes(searchQuery);
             const matchesType = typeFilter === "all" || model.type === typeFilter;
             return matchesSearch && matchesType;
         });
 
+        // Re-render models
+        console.log(filtered);
         renderModels(filtered);
     }
 
-    // Attach event listeners to search bar and filter dropdown
-    document.getElementById("search-bar").addEventListener("input", filterModels);
-    document.getElementById("type-filter").addEventListener("change", filterModels);
+    // Event listeners
+    const searchBar = document.getElementById("search-bar");
+    const typeFilter = document.getElementById("type-filter");
 
-    // Initial render of models
+    searchBar.addEventListener("input", () => {
+        console.log("Search query:", searchBar.value); // Debug log
+        filterModels();
+    });
+
+    typeFilter.addEventListener("change", filterModels);
+
+    // Initial render
     const initialModels = getModelsFromDOM();
-    console.log(initialModels);
     renderModels(initialModels);
 });

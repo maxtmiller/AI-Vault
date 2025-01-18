@@ -39,7 +39,7 @@
                 </select>
                 <button id="filter-btn">Filter</button>
             </section>
-            <section class="models-section">
+            <section class="models-section" id="models-section">
                 <!-- AI Models Display -->
                 <div class="model-card">
                     <h3>Image Classifier</h3>
@@ -137,7 +137,7 @@
             <p>&copy; 2025 AI Model Marketplace. All rights reserved.</p>
         </footer>
     </div>
-    <script async defer src="../render.js"></script>
+    <script defer src="../render.js"></script>
     <script>
         const userName = '<%= userName %>';
         document.getElementById('welcome-message').innerText = `Welcome, ${userName}!`;
