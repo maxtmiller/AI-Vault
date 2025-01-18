@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Marketplace Dashboard</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="../logo.jpg" rel="icon" type="image/jpg" style="border-radius: 50%;">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div style="display: flex; align-items: center;">
+                <img src="../logo.jpg" width="60px;" height="60px" style="border-radius: 30px;">
+                <h1 style="margin-left: 10px;">AI Model Marketplace</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/models">My Models</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="dashboard-content">
+            <section class="welcome-section">
+                <h2 id="welcome-message">My Models</h2>
+                <p>Here are your AI models:</p>
+            </section>
+            <section class="models-section" id="models-container">
+                <!-- AI Models Display will be dynamically populated here -->
+            </section>
+        </main>
+        <footer class="dashboard-footer">
+            <p>&copy; 2025 AI Model Marketplace. All rights reserved.</p>
+        </footer>
+    </div>
+    <script>
+        // Assuming models is passed as a JSON array from your backend
+        const modelArray = <%- JSON.stringify(models) %>;
+
+        // Get the container element where model cards will be inserted
+        const modelsContainer = document.getElementById('models-container');
+
+        // Loop through the modelArray and create model cards
+        modelArray.forEach(model => {
+            // Create the model card element
+            const modelCard = document.createElement('div');
+            modelCard.classList.add('model-card');
+            console.log(model.lastUpdated);
+
+            // Insert the content for the model card
+            modelCard.innerHTML = `
+                <h3>${model.name}</h3>
+                <p>Type: ${model.type}</p>
+                <p>Last Updated: ${new Date(model.lastUpdated).toLocaleDateString()}</p>
+                <button style="margin-right:15px;">
+                    <a href="/model/${model._id}" style="text-decoration:none;padding:6px;color:white;">View</a>
+                </button>
+                <button class="download-btn" data-file-id="${model._id}">Download</button>
+            `;
+
+            // Append the model card to the models container
+            modelsContainer.appendChild(modelCard);
+        });
+
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const fileId = this.getAttribute('data-file-id'); // Get the file ID from the button's data attribute
+
+                // Create the download link (adjust the path if necessary)
+                const downloadUrl = `/download/${fileId}`;
+
+                // Trigger the download by navigating to the URL
+                window.location.href = downloadUrl;
+            });
+        });
+    </script>
+</body>
+</html>

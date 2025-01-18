@@ -1,0 +1,43 @@
+{
+  "dependencies": {
+    "@midnight-ntwrk/dapp-connector-api": "^1.2.3",
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "auth0": "^4.16.0",
+    "axios": "^1.7.9",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "ethers": "^6.13.5",
+    "express": "^4.21.2",
+    "express-openid-connect": "^2.17.1",
+    "express-session": "^1.18.1",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.5",
+    "multer": "^1.4.5-lts.1",
+    "passport": "^0.7.0",
+    "passport-auth0": "^1.4.4",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "web3": "^4.16.0"
+  },
+  "name": "uofthacks12",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxtmiller/UofTHacks12.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/maxtmiller/UofTHacks12/issues"
+  },
+  "homepage": "https://github.com/maxtmiller/UofTHacks12#readme"
+}
