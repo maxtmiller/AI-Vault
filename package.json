@@ -39,5 +39,8 @@
   "bugs": {
     "url": "https://github.com/maxtmiller/UofTHacks12/issues"
   },
-  "homepage": "https://github.com/maxtmiller/UofTHacks12#readme"
+  "homepage": "https://github.com/maxtmiller/UofTHacks12#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
 }

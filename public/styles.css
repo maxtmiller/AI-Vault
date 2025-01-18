@@ -5,28 +5,61 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: 'Matrix Code NFI';
+    src: url('path-to-matrix-font.ttf') format('truetype');
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #4f93ff, #1c1d25);
-    color: #fff;
+    font-family: 'Matrix Code NFI', 'Courier New', monospace;
+    background-color: #000;
+    color: #00ff00;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Matrix Rain Effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, 
+        rgba(0, 255, 0, 0.03) 25%, 
+        rgba(0, 0, 0, 0.2) 100%);
+    pointer-events: none;
+    animation: matrix-rain 20s linear infinite;
+    z-index: 1;
+}
+
+@keyframes matrix-rain {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 1000px; }
 }
 
 /* Header Styling */
 .dashboard-header {
-    background: #1c1d25;
+    background: rgba(0, 0, 0, 0.9);
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #4f93ff;
+    border-bottom: 2px solid #00ff00;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
 }
 
 .dashboard-header h1 {
     font-size: 24px;
-    color: #4f93ff;
+    color: #00ff00;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    letter-spacing: 2px;
 }
 
 .dashboard-header nav ul {
@@ -37,179 +70,151 @@ body {
 
 .dashboard-header nav ul li a {
     text-decoration: none;
-    color: #fff;
+    color: #00ff00;
     font-size: 18px;
     margin-right: 25px;
-    transition: color 0.3s;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
 }
 
 .dashboard-header nav ul li a:hover {
-    color: #4f93ff;
+    color: #fff;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
 }
 
 /* Content Styling */
 .dashboard-content {
     padding: 20px;
     flex: 1;
+    background-color: rgba(0, 0, 0, 0.9);
+    position: relative;
+    z-index: 2;
 }
 
 .welcome-section h2 {
     font-size: 30px;
     margin-bottom: 10px;
+    color: #00ff00;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .welcome-section p {
     font-size: 16px;
     margin-bottom: 20px;
-}
-
-.models-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    color: #00ff00;
+    opacity: 0.8;
 }
 
 /* Model Card Styling */
 .model-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    background: rgba(0, 20, 0, 0.7);
+    border: 1px solid #00ff00;
+    border-radius: 5px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.model-card::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(0, 255, 0, 0.1) 50%,
+        transparent 100%
+    );
+    transition: all 0.6s;
+}
+
+.model-card:hover::before {
+    top: 100%;
+    left: 100%;
 }
 
 .model-card h3 {
     font-size: 20px;
     margin-bottom: 10px;
-    color: #163d78;
+    color: #00ff00;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
 }
 
 .model-card p {
     font-size: 14px;
     margin-bottom: 10px;
-    color: #ddd;
+    color: #00ff00;
+    opacity: 0.8;
 }
 
 .model-card button {
     padding: 10px 20px;
-    background: #4f93ff;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
+    background: transparent;
+    border: 1px solid #00ff00;
+    border-radius: 3px;
+    color: #00ff00;
     cursor: pointer;
     font-size: 14px;
-    transition: background 0.3s;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
 }
 
 .model-card button:hover {
-    background: #3c76d9;
+    background: #00ff00;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
 }
 
-.model-card:hover {
+/* Model Details Section */
+.model-detail-section {
+    border-bottom: 1px solid #00ff00;
+    background: rgba(0, 20, 0, 0.7);
+    padding: 2rem;
+    border-radius: 5px;
+}
+
+.model-specifications li {
+    color: #00ff00;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+    padding: 0.5rem 0;
+}
+
+.model-additional-info {
+    background-color: rgba(0, 20, 0, 0.7);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+}
+
+.similar-model-card {
+    background-color: rgba(0, 20, 0, 0.7);
+    border: 1px solid #00ff00;
+    transition: all 0.3s;
+}
+
+.similar-model-card:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Footer Styling */
 .dashboard-footer {
-    background: #1c1d25;
+    background: rgba(0, 0, 0, 0.9);
     text-align: center;
-    padding: 10px;
+    padding: 15px;
     font-size: 12px;
-    border-top: 2px solid #4f93ff;
-    color: #ddd;
-    position: absolute;
+    border-top: 2px solid #00ff00;
+    color: #00ff00;
+    position: relative;
     width: 100%;
-    bottom: 0;
-}
-
-
-.dashboard-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.model-detail-section {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 2rem;
-}
-
-.model-main-info {
-    flex: 3;
-    display: flex;
-    gap: 2rem;
-}
-
-.model-image img {
-    max-width: 200px;
-    border-radius: 8px;
-}
-
-.model-details {
-    flex: 1;
-}
-
-.model-specifications {
-    list-style: none;
-    padding: 0;
-}
-
-.model-specifications li {
-    margin-bottom: 0.5rem;
-}
-
-.download-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.download-button:hover {
-    background-color: #0056b3;
-}
-
-.model-additional-info {
-    flex: 1;
-    background-color: #f9f9f9;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-.similar-models-section {
-    margin-top: 2rem;
-}
-
-.similar-models-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.similar-model-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1rem;
-    max-width: 200px;
-    text-align: center;
-}
-
-.similar-model-card img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-}
-
-.view-model-link {
-    color: #007bff;  
+    z-index: 2;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
 }
