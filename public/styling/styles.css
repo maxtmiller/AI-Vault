@@ -147,6 +147,7 @@ body::after {
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .model-card::before {

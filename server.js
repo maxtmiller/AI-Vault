@@ -71,7 +71,6 @@ function deleteFilesInFolder(folderPath) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 const config = {
     authRequired: false,
     auth0Logout: true,
