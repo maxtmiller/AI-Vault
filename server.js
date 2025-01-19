@@ -5,6 +5,7 @@ const multer = require('multer');
 const fs = require('fs');
 const { MongoClient, ServerApiVersion, GridFSBucket, ObjectId } = require("mongodb");
 const { auth } = require("express-openid-connect");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
 app.use(express.json());
@@ -167,6 +168,7 @@ app.use(auth(config));
 app.get('/', (req, res) => {
     if (req.oidc.isAuthenticated()) {
         const userName = req.oidc.user.name;
+
         res.render('dashboard', { userName });
     } else {
         res.redirect('/login');
@@ -274,7 +276,7 @@ app.get('/list/:id', async (req, res) => {
             if (result.matchedCount === 0) {
                 res.status(404).send({ message: "No document found with the given userId." });
             } 
-            
+
             res.render('models', { models });
         } catch (error) {
             console.error("Error updating document:", error);
@@ -301,6 +303,50 @@ app.get('/profile', async (req, res) => {
         console.log("User ID:", userId);
 
         res.render('profile', { userId });
+    } catch (err) {
+        console.error("Error fetching models:", err);
+        res.status(500).json({ error: 'An error occurred while fetching models.' });
+    }
+});
+
+app.get('/cart/:id', async (req, res) => {
+    try {
+        await connectToDatabase();
+
+        const db = client.db('webapp');
+        const modelsCollection = db.collection('models');
+
+        const userId = req.oidc.user;
+        
+        if (!userId) {
+            return res.status(401).json({ error: 'User not authenticated' });
+        }
+
+        console.log("User ID:", userId);
+
+        res.render('cart', { userId });
+    } catch (err) {
+        console.error("Error fetching models:", err);
+        res.status(500).json({ error: 'An error occurred while fetching models.' });
+    }
+});
+
+app.get('/cart', async (req, res) => {
+    try {
+        await connectToDatabase();
+
+        const db = client.db('webapp');
+        const modelsCollection = db.collection('models');
+
+        const userId = req.oidc.user;
+        
+        if (!userId) {
+            return res.status(401).json({ error: 'User not authenticated' });
+        }
+
+        console.log("User ID:", userId);
+
+        res.render('cart', { userId });
     } catch (err) {
         console.error("Error fetching models:", err);
         res.status(500).json({ error: 'An error occurred while fetching models.' });

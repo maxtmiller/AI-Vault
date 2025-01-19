@@ -9,6 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function getRandomInt(min, max) {
+        min = Math.ceil(min); // Round up the minimum value
+        max = Math.floor(max); // Round down the maximum value
+        return Math.floor(Math.random() * (max - min + 1)) + min; // Generate random integer
+    }
+
     const allModels = getModelsFromDOM();
 
     function renderModels(filteredModels) {
@@ -20,14 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+
         filteredModels.forEach(model => {
             const card = document.createElement("div");
             card.className = "model-card";
+            const val = getRandomInt(500, 12500)
             card.innerHTML = `
                 <h3>${model.name}</h3>
                 <p>Type: ${capitalize(model.type)}</p>
                 <p>Last Updated: ${model.lastUpdated}</p>
-                <button>View Details</button>
+                <form action="/model/678c799ebb0f7d784b454107" method="GET">
+                    <button type="submit">View Details</button>
+                </form>
+                <form action="/cart/${val}" method="GET">
+                    <button type="submit">Buy: $${val}</button>
+                </form>
             `;
             container.appendChild(card);
         });
