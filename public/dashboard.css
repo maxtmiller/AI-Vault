@@ -55,7 +55,7 @@ h1, h2 {
 }
 
 #filter-btn {
-    padding: 10px 20px;
+    /* padding: 10px; */
     background: transparent;
     border: 1px solid #00ff00;
     border-radius: 3px;
@@ -67,6 +67,7 @@ h1, h2 {
     letter-spacing: 1px;
     position: relative;
     overflow: hidden;
+    margin-top: 0px!important;
 }
 
 #filter-btn:hover {

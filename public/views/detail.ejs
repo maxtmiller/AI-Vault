@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Model Marketplace Dashboard</title>
+    <title>AI Blackmarket : Model Details</title>
     <link rel="stylesheet" href="../styles.css">
     <link href="../logo.jpg" rel="icon" type="image/jpg" style="border-radius: 50%;">
 </head>
@@ -12,66 +12,74 @@
         <header class="dashboard-header">
             <div style="display: flex; align-items: center;">
                 <img src="../logo.jpg" width="60px;" height="60px" style="border-radius: 30px;">
-                <h1 style="margin-left: 10px;">AI Model Marketplace</h1>
+                <h1 style="margin-left: 10px;">AI Blackmarket</h1>
             </div>
             <nav>
                 <ul>
                     <li><a href="/">Dashboard</a></li>
-                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/models">My Models</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </nav>
         </header>
         <main class="dashboard-content">
             <section class="model-detail-section">
-                <div class="model-main-info">
-                    <div class="model-image">
-                        <img src="path-to-model-image.jpg" alt="Model Image" />
+                <div class="model-main-info" style="justify-content: space-between">
+                    <div class="model-main-info">
+                        <div class="model-image">
+                            <img src="../model.png" alt="Model Image" width="240px" height="240px"/>
+                        </div>
+                        <div class="model-details">
+                            <h2 id="model-name" style="font-size: 30px;"> .</h2>
+                            <p id="model-description" style="font-size: 20px;margin-bottom: 10px;">
+                                Detailed description of the model goes here. Include information about its purpose, architecture, training dataset, and more.
+                            </p>
+                            <ul class="model-specifications">
+                                <li id="model-owner"><strong>Owner:</strong> .</li>
+                                <li id="model-type"><strong>Type:</strong> .</li>
+                                <li id="model-size"><strong>Size:</strong> .</li>
+                                <li id="model-date"><strong>Last Updated:</strong> .</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="model-details">
-                        <h2 id="model-name">Model Name</h2>
-                        <p id="model-description">
-                            Detailed description of the model goes here. Include information about its purpose, architecture, training dataset, and more.
-                        </p>
-                        <ul class="model-specifications">
-                            <li><strong>Type:</strong> Classification</li>
-                            <li><strong>Size:</strong> 2.5 GB</li>
-                            <li><strong>Accuracy:</strong> 92%</li>
-                            <li><strong>Last Updated:</strong> January 15, 2025</li>
-                        </ul>
-                        <button class="download-button">Download Model</button>
+                    <div class="download model-card">
+                        <button class="download-btn">Download Model</button>
+                        <form id="listing" action="/list/${model_id}" method="GET">
+                            <button id="sell-btn" class="sell-btn">List Model</button>
+                        </form>
                     </div>
                 </div>
                 <aside class="model-additional-info">
-                    <h3>More Information</h3>
-                    <p>
+                    <h3 style="padding: 5px;padding-left:10px;">More Information</h3>
+                    <p style="padding-left: 10px;padding-bottom:10px;">
                         Additional insights about the model, such as version history, licensing details, or usage guidelines. Provide links to documentation or tutorials.
                     </p>
-                    <a href="link-to-documentation" class="info-link">View Documentation</a>
-                    <a href="link-to-training-data" class="info-link">Explore Training Data</a>
+                    <!-- <a href="link-to-documentation" class="info-link" style="padding: 5px;padding-bottom:10px;">View Documentation</a>
+                    <a href="link-to-training-data" class="info-link" style="padding: 5px;padding-bottom:10px;">Explore Training Data</a> -->
                 </aside>
             </section>
             <section class="similar-models-section">
-                <h3>Similar Models</h3>
+                <h3 style="margin-top:17px;margin-bottom:20px;font-size: 22px;">Similar Models</h3>
                 <div class="similar-models-grid">
                     <div class="similar-model-card">
-                        <img src="path-to-similar-model-image.jpg" alt="Similar Model Image" />
+                        <!-- <img src="path-to-similar-model-image.jpg" alt="Similar Model Image" /> -->
                         <h4 class="model-name">Similar Model 1</h4>
                         <p class="model-summary">Brief description of the similar model.</p>
-                        <a href="link-to-model-1" class="view-model-link">View Details</a>
+                        <!-- <a href="link-to-model-1" class="view-model-link">View Details</a> -->
                     </div>
                     <div class="similar-model-card">
-                        <img src="path-to-similar-model-image.jpg" alt="Similar Model Image" />
+                        <!-- <img src="path-to-similar-model-image.jpg" alt="Similar Model Image" /> -->
                         <h4 class="model-name">Similar Model 2</h4>
                         <p class="model-summary">Brief description of the similar model.</p>
-                        <a href="link-to-model-2" class="view-model-link">View Details</a>
+                        <!-- <a href="link-to-model-2" class="view-model-link">View Details</a> -->
                     </div>
                     <div class="similar-model-card">
-                        <img src="path-to-similar-model-image.jpg" alt="Similar Model Image" />
+                        <!-- <img src="path-to-similar-model-image.jpg" alt="Similar Model Image" /> -->
                         <h4 class="model-name">Similar Model 3</h4>
                         <p class="model-summary">Brief description of the similar model.</p>
-                        <a href="link-to-model-3" class="view-model-link">View Details</a>
+                        <!-- <a href="link-to-model-3" class="view-model-link">View Details</a> -->
                     </div>
                 </div>
             </section>
@@ -82,7 +90,54 @@
     </div>
     <script>
         const modelArray = <%- JSON.stringify(models) %>;
+        const userArray = <%- JSON.stringify(users) %>;
+
+        const form = document.getElementById('listing');
+        form.action = `/list/${modelArray._id}`;
+        
+        const sell = document.getElementById('sell-btn');
+        if (modelArray.list === true) {
+            sell.innerHTML = 'Unlist Model';
+        } else {
+            sell.innerHTML = 'List Model';
+        }
+
+        const model_id = modelArray._id;
+
         console.log(modelArray);
+        document.getElementById('model-name').innerText = `${modelArray.name}`;
+        document.getElementById('model-description').innerText = `${modelArray.description}`;
+
+        const timestamp = modelArray.lastUpdated;
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleString("en-US", {
+            year: "numeric", // e.g., 2025
+            month: "long", // e.g., January
+            day: "numeric", // e.g., 18
+        });
+
+        document.getElementById('model-owner').innerHTML = `<strong>Owner:</strong> ${userArray.name}`;
+        document.getElementById('model-size').innerHTML = `<strong>Size:</strong> ${modelArray.size}`;
+        document.getElementById('model-date').innerHTML = `<strong>Last Updated:</strong> ${formattedDate}`;
+        document.getElementById('model-type').innerHTML = `<strong>Type:</strong> ${modelArray.type}`;
+
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const fileId = this.getAttribute('data-file-id');
+                
+                const downloadUrl = `/download/${modelArray._id}`;
+
+                window.location.href = downloadUrl;
+            });
+        });
+
+        document.querySelectorAll('.sell-btn').forEach(button => {
+            button.addEventListener('click', function () {                
+                const listURL = `/list/${modelArray._id}`;
+
+                window.location.href = listURL;
+            });
+        });
     </script>
 </body>
 </html>

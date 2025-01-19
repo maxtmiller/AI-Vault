@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Model Marketplace Dashboard</title>
+    <title>AI Blackmarket : My Models</title>
     <link rel="stylesheet" href="../styles.css">
     <link href="../logo.jpg" rel="icon" type="image/jpg" style="border-radius: 50%;">
 </head>
@@ -12,13 +12,14 @@
         <header class="dashboard-header">
             <div style="display: flex; align-items: center;">
                 <img src="../logo.jpg" width="60px;" height="60px" style="border-radius: 30px;">
-                <h1 style="margin-left: 10px;">AI Model Marketplace</h1>
+                <h1 style="margin-left: 10px;">AI Blackmarket</h1>
             </div>
             <nav>
                 <ul>
                     <li><a href="/">Dashboard</a></li>
-                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/models">My Models</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </nav>
@@ -67,12 +68,10 @@
 
         document.querySelectorAll('.download-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const fileId = this.getAttribute('data-file-id'); // Get the file ID from the button's data attribute
+                const fileId = this.getAttribute('data-file-id');
 
-                // Create the download link (adjust the path if necessary)
                 const downloadUrl = `/download/${fileId}`;
 
-                // Trigger the download by navigating to the URL
                 window.location.href = downloadUrl;
             });
         });

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
+    <title>AI Blackmarket : Profile</title>
     <link rel="stylesheet" href="../profile.css">
     <link rel="stylesheet" href="../styles.css">
     <link href="../logo.jpg" rel="icon" type="image/jpg" style="border-radius: 50%;">
@@ -13,13 +13,14 @@
         <header class="dashboard-header">
             <div style="display: flex; align-items: center;">
                 <img src="../logo.jpg" width="60px;" height="60px" style="border-radius: 30px;">
-                <h1 style="margin-left: 10px;">AI Model Marketplace</h1>
+                <h1 style="margin-left: 10px;">AI Blackmarket</h1>
             </div>
             <nav>
                 <ul>
                     <li><a href="/">Dashboard</a></li>
-                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/models">My Models</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </nav>
@@ -28,7 +29,7 @@
         <main class="profile-content">
             <section class="user-info">
                 <img src="../profile.png" alt="Profile Picture" class="profile-picture">
-                <h2>John Doe</h2>
+                <h2 id="name">John Doe</h2>
                 <p>Bio: AI enthusiast and model creator specializing in text and vision-based AI solutions.</p>
                 <p id="email">Email: john.doe@example.com</p>
             </section>
@@ -53,20 +54,73 @@
                         <p>Last Updated: Dec 20, 2024</p>
                         <button>View Details</button>
                     </div>
-                    <div class="model-card">
-                        <h3>Spam Classifier</h3>
-                        <p>Type: Text</p>
-                        <p>Last Updated: Nov 15, 2024</p>
-                        <button>View Details</button>
+                    <div class="model-card add-card">
+                        <h3>Make New</h3>
+                        <button id="openPopup">Add</button>
                     </div>
                 </div>
             </section>
         </main>
     </div>
+    <!-- Popup container -->
+    <div id="popup" class="popup hidden">
+        <div class="popup-content">
+            <h2>Add a New Model</h2>
+            <form id="modelForm" action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="modelName">Model Name:</label>
+                    <input type="text" id="modelName" name="modelName" placeholder="Enter model name" required>
+                </div>
+                <div class="form-group">
+                    <label for="modelDescription">Description:</label>
+                    <textarea id="modelDescription" name="modelDescription" placeholder="Enter model description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modelType">Type:</label>
+                    <select id="modelType" name="modelType" required>
+                        <option value="" disabled selected>Select type</option>
+                        <option value="Vision">Vision</option>
+                        <option value="NLP">NLP</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Data">Data</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modelFile">Upload File:</label>
+                    <input type="file" id="modelFile" name="modelFile" accept=".h5,.zip,.tar.gz" required>
+                </div>
+                <button type="submit" id="submitPopup">Submit</button>
+                <button type="button" id="closePopup">Cancel</button>
+            </form>
+        </div>
+    </div>
     <script>
         const userInfo = <%- JSON.stringify(userId) %>;
         console.log(userInfo);
         document.getElementById('email').innerText = `Email: ${userInfo.email}!`;
+        document.getElementById('name').innerText = `${userInfo.name}`;
+
+        const openPopupButton = document.getElementById('openPopup');
+        const closePopupButton = document.getElementById('closePopup');
+        const popup = document.getElementById('popup');
+
+        // Open the popup on button press
+        openPopupButton.addEventListener('click', () => {
+            popup.classList.remove('hidden'); // Show the popup
+        });
+
+        // Close the popup on button press
+        closePopupButton.addEventListener('click', () => {
+            popup.classList.add('hidden'); // Hide the popup
+        });
+
+        // Optional: Close popup when clicking outside the content area
+        popup.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                popup.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>

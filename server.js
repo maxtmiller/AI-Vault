@@ -22,7 +22,7 @@ const client = new MongoClient(process.env.MONGODB_URI, {
     }
 });
 
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
 
 async function connectToDatabase() {
     try {
@@ -65,6 +65,24 @@ async function createCollection() {
         // Open a GridFS upload stream
         const uploadStream = bucket.openUploadStream('trained_model.h5');
 
+        const { size } = fs.statSync(filePath); // size is in bytes
+
+        // Convert size to a more readable format (e.g., KB, MB)
+        const formatSize = (size) => {
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            let index = 0;
+            let fileSize = size;
+
+            while (fileSize >= 1024 && index < units.length - 1) {
+                fileSize /= 1024;
+                index++;
+            }
+
+            return `${fileSize.toFixed(2)} ${units[index]}`;
+        };
+
+        const formattedSize = formatSize(size);
+
         // Wait for the file to be uploaded
         await new Promise((resolve, reject) => {
             // Pipe the file to GridFS
@@ -78,11 +96,13 @@ async function createCollection() {
         // After upload completes, insert metadata into the collection
         const modelsCollection = db.collection('models');
         const result = await modelsCollection.insertOne({
-            userId: 'development',  // Replace with actual user ID
+            userId: 'development',
             name: 'AI Model',
             type: 'NLP',
+            size: formattedSize,
+            list: false,
             description: '',
-            file: uploadStream.id, // Store the file ID in the database
+            file: uploadStream.id,
             lastUpdated: new Date(),
         });
 
@@ -92,6 +112,42 @@ async function createCollection() {
     }
 }
 createCollection();
+
+function deleteFilesInFolder(folderPath) {
+    fs.readdir(folderPath, (err, files) => {
+        if (err) {
+            console.error(`Failed to read directory: ${err.message}`);
+            return;
+        }
+
+        files.forEach((file) => {
+            const filePath = path.join(folderPath, file);
+
+            fs.stat(filePath, (err, stats) => {
+                if (err) {
+                    console.error(`Failed to get stats for file: ${err.message}`);
+                    return;
+                }
+
+                if (stats.isFile()) {
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            console.error(`Failed to delete file: ${err.message}`);
+                        } else {
+                            console.log(`Deleted file: ${filePath}`);
+                        }
+                    });
+                }
+                // Optionally handle subfolders
+                else if (stats.isDirectory()) {
+                    console.log(`Skipping directory: ${filePath}`);
+                    // Uncomment below to recursively delete subfolders
+                    // deleteFilesInFolder(filePath);
+                }
+            });
+        });
+    });
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -104,18 +160,15 @@ const config = {
     issuerBaseURL: process.env.AUTH0_DOMAIN,
     secret: process.env.AUTH0_CLIENT_SECRET
 };
+
   
-  // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
 
-// req.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
     if (req.oidc.isAuthenticated()) {
-        // User is authenticated, serve the dashboard
         const userName = req.oidc.user.name;
         res.render('dashboard', { userName });
     } else {
-        // User is not authenticated, serve the login page
         res.redirect('/login');
         // res.sendFile(path.join(__dirname, './public/login.html'));
     }
@@ -164,14 +217,16 @@ app.get('/model/:id', async (req, res) => {
         const collection = db.collection('models');
 
         const modelId = req.params.id;
+        const users = req.oidc.user;
         const models = await collection.findOne({ _id: new ObjectId(modelId) });
         console.log(models);
+        console.log(users);
 
         if (!modelId) {
             return res.status(400).json({ error: 'Model ID is required.' });
         }
 
-        res.render('detail', { models });
+        res.render('detail', { models, users });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -191,6 +246,42 @@ app.get('/detail/:id', async (req, res) => {
         render('detail')
     } catch (err) {
         res.status(500).send('Error: ' + err.message);
+    }
+});
+
+
+app.get('/list/:id', async (req, res) => {
+    try {
+        await client.connect();
+        const db = client.db('webapp');
+        const collection = db.collection('models');
+
+        const modelId = req.params.id;
+        const models2 = await collection.findOne({ _id: new ObjectId(modelId) });
+        console.log("Line 261:", models2);
+
+        try {
+            const result = await collection.updateOne(
+                { _id: new ObjectId(modelId) },
+                { $set: { list: !models2.list } }
+            );
+
+            const userId = req.oidc.user.sub;
+            console.log(userId);
+
+            const models = await collection.find({ userId }).toArray();
+        
+            if (result.matchedCount === 0) {
+                res.status(404).send({ message: "No document found with the given userId." });
+            } 
+            
+            res.render('models', { models });
+        } catch (error) {
+            console.error("Error updating document:", error);
+            res.status(500).send({ message: "An error occurred while updating the document." });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -216,45 +307,92 @@ app.get('/profile', async (req, res) => {
     }
 });
 
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');  // Save uploaded files in the 'uploads' folder
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));  // Add timestamp to file name
+    }
+});
 
+const upload = multer({ storage: storage });
 
-app.post('/upload-model', upload.single('modelFile'), async (req, res) => {
+app.post('/upload', upload.fields([{ name: 'modelFile', maxCount: 1 }]), async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'uploads', req.file.filename); // File path of the uploaded .h5 file
+        const { modelName, modelDescription, modelType } = req.body;
+        const file = req.files['modelFile'] ? req.files['modelFile'][0] : null;
+        const path_to_file = file.filename;
+        
+        // console.log(req.body);
+        // console.log(req.oidc.user);
+        // console.log(path_to_file);
+        // console.log(modelName, modelDescription, modelType);
+        // res.status(200).send('Model uploaded successfully!');
 
-        await client.connect();
+        const filePath = path.join(__dirname, 'uploads', path_to_file);
+
+        await connectToDatabase();
+
         const db = client.db('webapp');
+        
         const bucket = new GridFSBucket(db, { bucketName: 'models' });
 
-        // Read the file and upload it to GridFS
         const fileStream = fs.createReadStream(filePath);
-        const uploadStream = bucket.openUploadStream(req.file.originalname);
-        fileStream.pipe(uploadStream);
 
-        uploadStream.on('finish', async () => {
-            // After the file is uploaded, save the model metadata to the collection
-            await db.collection('models').insertOne({
-                userId: req.oidc.user.sub,
-                name: 'AI Model',
-                type: 'NLP',
-                description: '',
-                file: uploadStream.id,
-                lastUpdated: new Date(),
-            });
+        const uploadStream = bucket.openUploadStream(filePath);
 
-            res.status(200).send('Model uploaded successfully!');
+        const { size } = fs.statSync(filePath);
+
+        const formatSize = (size) => {
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            let index = 0;
+            let fileSize = size;
+
+            while (fileSize >= 1024 && index < units.length - 1) {
+                fileSize /= 1024;
+                index++;
+            }
+
+            return `${fileSize.toFixed(2)} ${units[index]}`;
+        };
+
+        const formattedSize = formatSize(size);
+
+        await new Promise((resolve, reject) => {
+            fileStream.pipe(uploadStream);
+
+            uploadStream.on('finish', resolve);
+            uploadStream.on('error', reject);
         });
 
-        uploadStream.on('error', (err) => {
-            res.status(500).send('Error uploading file: ' + err.message);
+        const userId = req.oidc.user.sub;
+
+        const modelsCollection = db.collection('models');
+        const result = await modelsCollection.insertOne({
+            userId: userId,
+            name: modelName,
+            type: modelType,
+            size: formattedSize,
+            list: false,
+            description: modelDescription,
+            file: uploadStream.id,
+            lastUpdated: new Date(),
         });
+
+        const models = await modelsCollection.find({ userId }).toArray();
+
+        deleteFilesInFolder('./uploads');
+
+        res.render('models', { models });
     } catch (err) {
         res.status(500).send('Error: ' + err.message);
     }
 });
 
 app.get('/download/:id', async (req, res) => {
-    const fileId = req.params.id; // Get the file ObjectId from the URL
+    const fileId = req.params.id;
 
     try {
         // Log the incoming request and the fileId

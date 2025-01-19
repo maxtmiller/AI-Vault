@@ -22,9 +22,13 @@ h1, h2 {
     max-width: 900px;
     margin: 20px auto;
     padding: 20px;
-    background: grey;
+    background: #3f3b3b;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+}
+
+.profile-content p {
+    color: whitesmoke!important;
 }
 
 /* User information section */
