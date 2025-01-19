@@ -22,7 +22,7 @@ body {
     min-height: 100vh;
 }
 
-/* Matrix Rain Effect */
+/* Update your existing Matrix Rain Effect with this enhanced version */
 body::before {
     content: '';
     position: fixed;
@@ -31,16 +31,46 @@ body::before {
     width: 100%;
     height: 100%;
     background: linear-gradient(0deg, 
-        rgba(0, 255, 0, 0.03) 25%, 
-        rgba(0, 0, 0, 0.2) 100%);
+        rgba(0, 255, 0, 0.03) 0%, 
+        rgba(0, 255, 0, 0.02) 25%,
+        rgba(0, 0, 0, 0.2) 100%),
+        repeating-linear-gradient(0deg,
+            transparent 0%,
+            rgba(0, 255, 0, 0.05) 50%,
+            transparent 100%);
+    background-size: 100% 100%, 100% 50px;
     pointer-events: none;
     animation: matrix-rain 20s linear infinite;
     z-index: 1;
 }
 
+/* Add additional Matrix characters effect */
+body::after {
+    content: '01';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg,
+        transparent 0px,
+        rgba(0, 255, 0, 0.05) 1px,
+        transparent 2px);
+    background-size: 3px 100%;
+    pointer-events: none;
+    animation: matrix-characters 30s linear infinite;
+    z-index: 1;
+    opacity: 0.5;
+}
+
 @keyframes matrix-rain {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 0 1000px, 0 1000px; }
+}
+
+@keyframes matrix-characters {
     0% { background-position: 0 0; }
-    100% { background-position: 0 1000px; }
+    100% { background-position: 1000px 1000px; }
 }
 
 /* Header Styling */
