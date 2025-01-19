@@ -316,6 +316,9 @@ app.get('/cart/:id', async (req, res) => {
         const db = client.db('webapp');
         const modelsCollection = db.collection('models');
 
+        const value = req.params.id;
+        console.log(value);
+
         const userId = req.oidc.user;
         
         if (!userId) {
@@ -324,7 +327,7 @@ app.get('/cart/:id', async (req, res) => {
 
         console.log("User ID:", userId);
 
-        res.render('cart', { userId });
+        res.render('cart', { value });
     } catch (err) {
         console.error("Error fetching models:", err);
         res.status(500).json({ error: 'An error occurred while fetching models.' });

@@ -288,7 +288,7 @@ body::after {
 }
 
 .model-card {
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
 
 .add-card {
@@ -403,4 +403,8 @@ button[type="button"] {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+.model-details {
+    max-width: 75%;
 }

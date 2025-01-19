@@ -57,8 +57,8 @@
             
                         <div class="form-group model-details">
                             <h4>Model Selected:</h4>
-                            <p>Model Name: <span class="model-name">[Model Name]</span></p>
-                            <p>Price: <span class="model-price">$[Model Price]</span></p>
+                            <p>Model Name: <span class="model-name">AGI Model</span></p>
+                            <p>Price: <span id="model-price" class="model-price">$[Model Price]</span></p>
                         </div>
             
                         <button type="submit" class="submit-btn">Complete Purchase</button>
@@ -71,7 +71,9 @@
         </footer>
     </div>
     <script>
-        
+        const val = <%- JSON.stringify(value) %>;
+        const priceText = document.getElementById('model-price');
+        priceText.innerHTML = '$'+val;
     </script>
 </body>
 </html>
