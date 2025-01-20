@@ -12,7 +12,8 @@ AI Vault offers a secure platform for companies and creators to share and sell A
 
 ## 🖥 TECHNOLOGIES USED 🖥
 - Frontend: HTML, CSS, Tailwind CSS
-- Backend: Node.js, Express.js, Javascript
+- Backend: Node.js, Javascript
+- Libraries: Express.js, Multer, Auth0
 - Database: MongoDB
 
 ## 🚀 WHAT'S NEXT FOR AI VAULT 🚀
