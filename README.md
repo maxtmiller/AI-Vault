@@ -20,6 +20,6 @@ AI Vault was created to address the challenge of securely sharing and selling AI
 - Backend: Node.js, Express.js, Javascript
 - Database: MongoDB
 
-## 🚀 THE NEXT STEPS FOR AI VAULT 🚀
+## 🚀 WHAT'S NEXT FOR AI VAULT 🚀
 
 A key next step for AI Vault is integrating Midnight’s security features to improve transaction protection. By using Midnight’s protocols, we can ensure that exchanges of AI models are secure and transactions are properly verified. This will help protect company and buyer data while keeping the platform focused on privacy.
