@@ -14,6 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'public', 'views'));
 
+
 const client = new MongoClient(process.env.MONGODB_URI, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -21,6 +22,7 @@ const client = new MongoClient(process.env.MONGODB_URI, {
         deprecationErrors: true,
     }
 });
+
 
 async function connectToDatabase() {
     try {
@@ -68,6 +70,7 @@ function deleteFilesInFolder(folderPath) {
     });
 }
 
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const config = {
@@ -79,8 +82,8 @@ const config = {
     secret: process.env.AUTH0_CLIENT_SECRET
 };
 
-  
 app.use(auth(config));
+
 
 app.get('/', (req, res) => {
     if (req.oidc.isAuthenticated()) {
@@ -107,8 +110,6 @@ app.get('/models', async (req, res) => {
         }
 
         const models = await modelsCollection.find({ userId }).toArray();
-        console.log("User ID:", userId);
-        console.log(models);
 
         res.render('models', { models });
     } catch (err) {
@@ -116,17 +117,7 @@ app.get('/models', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching models.' });
     }
 });
-  
-app.post('/models', async (req, res) => {
-    try {
-        const { name, price } = req.body;
-        console.log(req.body);
-        db.models.files.find({ _id: ObjectId("678bc3d52e91c701ade937e0") });
-        res.redirect('/models');
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+
 
 app.get('/model/:id', async (req, res) => {
     try {
@@ -137,8 +128,6 @@ app.get('/model/:id', async (req, res) => {
         const modelId = req.params.id;
         const users = req.oidc.user;
         const models = await collection.findOne({ _id: new ObjectId(modelId) });
-        console.log(models);
-        console.log(users);
 
         if (!modelId) {
             return res.status(400).json({ error: 'Model ID is required.' });
@@ -159,7 +148,6 @@ app.get('/list/:id', async (req, res) => {
 
         const modelId = req.params.id;
         const models2 = await collection.findOne({ _id: new ObjectId(modelId) });
-        console.log("Line 261:", models2);
 
         try {
             const result = await collection.updateOne(
@@ -168,7 +156,6 @@ app.get('/list/:id', async (req, res) => {
             );
 
             const userId = req.oidc.user.sub;
-            console.log(userId);
 
             const models = await collection.find({ userId }).toArray();
         
@@ -186,6 +173,7 @@ app.get('/list/:id', async (req, res) => {
     }
 });
 
+
 app.get('/profile', async (req, res) => {
     try {
         await connectToDatabase();
@@ -199,14 +187,13 @@ app.get('/profile', async (req, res) => {
             return res.status(401).json({ error: 'User not authenticated' });
         }
 
-        console.log("User ID:", userId);
-
         res.render('profile', { userId });
     } catch (err) {
         console.error("Error fetching models:", err);
         res.status(500).json({ error: 'An error occurred while fetching models.' });
     }
 });
+
 
 app.get('/cart/:id', async (req, res) => {
     try {
@@ -216,7 +203,6 @@ app.get('/cart/:id', async (req, res) => {
         const modelsCollection = db.collection('models');
 
         const value = req.params.id;
-        console.log(value);
 
         const userId = req.oidc.user;
         
@@ -224,14 +210,13 @@ app.get('/cart/:id', async (req, res) => {
             return res.status(401).json({ error: 'User not authenticated' });
         }
 
-        console.log("User ID:", userId);
-
         res.render('cart', { value });
     } catch (err) {
         console.error("Error fetching models:", err);
         res.status(500).json({ error: 'An error occurred while fetching models.' });
     }
 });
+
 
 app.get('/cart', async (req, res) => {
     try {
@@ -246,7 +231,6 @@ app.get('/cart', async (req, res) => {
             return res.status(401).json({ error: 'User not authenticated' });
         }
 
-        console.log("User ID:", userId);
         const value = 0;
 
         res.render('cart', { value });
@@ -255,6 +239,7 @@ app.get('/cart', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching models.' });
     }
 });
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -333,6 +318,7 @@ app.post('/upload', upload.fields([{ name: 'modelFile', maxCount: 1 }]), async (
     }
 });
 
+
 app.get('/download/:id', async (req, res) => {
     const fileId = req.params.id;
 
@@ -347,8 +333,6 @@ app.get('/download/:id', async (req, res) => {
         await connectToDatabase();
         const db = client.db('webapp');
         const collection = db.collection('models');
-
-        console.log('Database connection successful.');
 
         const fileDocument = await collection.findOne({ _id: new ObjectId(fileId) });
 
@@ -382,7 +366,6 @@ app.get('/download/:id', async (req, res) => {
 });
 
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
