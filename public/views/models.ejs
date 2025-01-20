@@ -38,20 +38,15 @@
         </footer>
     </div>
     <script>
-        // Assuming models is passed as a JSON array from your backend
         const modelArray = <%- JSON.stringify(models) %>;
 
-        // Get the container element where model cards will be inserted
         const modelsContainer = document.getElementById('models-container');
 
-        // Loop through the modelArray and create model cards
         modelArray.forEach(model => {
-            // Create the model card element
             const modelCard = document.createElement('div');
             modelCard.classList.add('model-card');
             console.log(model.lastUpdated);
 
-            // Insert the content for the model card
             modelCard.innerHTML = `
                 <h3>${model.name}</h3>
                 <p>Type: ${model.type}</p>
@@ -62,7 +57,6 @@
                 <button class="download-btn" data-file-id="${model._id}">Download</button>
             `;
 
-            // Append the model card to the models container
             modelsContainer.appendChild(modelCard);
         });
 

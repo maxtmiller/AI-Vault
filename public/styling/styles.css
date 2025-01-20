@@ -362,13 +362,13 @@ button {
     margin-top: 10px;
 }
 
-button[type="submit"] {
+.popup-content button[type="submit"] {
     background-color: #4CAF50;
     color: white;
     border: none;
 }
 
-button[type="button"] {
+.popup-content button[type="button"] {
     background-color: #f44336;
     color: white;
     border: none;

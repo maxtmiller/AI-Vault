@@ -40,19 +40,25 @@
                         <h3>Image Classifier</h3>
                         <p>Type: Vision</p>
                         <p>Last Updated: Jan 15, 2025</p>
-                        <button>View Details</button>
+                        <form action="/model/678c799ebb0f7d784b454107" method="GET">
+                            <button type="submit">View Details</button>
+                        </form>
                     </div>
                     <div class="model-card">
                         <h3>Emotion Detector</h3>
                         <p>Type: Vision</p>
                         <p>Last Updated: Jan 12, 2025</p>
-                        <button>View Details</button>
+                        <form action="/model/678c799ebb0f7d784b454107" method="GET">
+                            <button type="submit">View Details</button>
+                        </form>
                     </div>
                     <div class="model-card">
                         <h3>Recommendation System</h3>
                         <p>Type: Data</p>
                         <p>Last Updated: Dec 20, 2024</p>
-                        <button>View Details</button>
+                        <form action="/model/678c799ebb0f7d784b454107" method="GET">
+                            <button type="submit">View Details</button>
+                        </form>
                     </div>
                     <div class="model-card add-card">
                         <h3>Make New</h3>
@@ -65,7 +71,6 @@
             <p>&copy; 2025 AI Vault. All rights reserved.</p>
         </footer>
     </div>
-    <!-- Popup container -->
     <div id="popup" class="popup hidden">
         <div class="popup-content">
             <h2>Add a New Model</h2>
@@ -108,17 +113,14 @@
         const closePopupButton = document.getElementById('closePopup');
         const popup = document.getElementById('popup');
 
-        // Open the popup on button press
         openPopupButton.addEventListener('click', () => {
-            popup.classList.remove('hidden'); // Show the popup
+            popup.classList.remove('hidden');
         });
 
-        // Close the popup on button press
         closePopupButton.addEventListener('click', () => {
-            popup.classList.add('hidden'); // Hide the popup
+            popup.classList.add('hidden');
         });
 
-        // Optional: Close popup when clicking outside the content area
         popup.addEventListener('click', (event) => {
             if (event.target === popup) {
                 popup.classList.add('hidden');

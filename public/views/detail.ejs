@@ -107,9 +107,9 @@
         const timestamp = modelArray.lastUpdated;
         const date = new Date(timestamp);
         const formattedDate = date.toLocaleString("en-US", {
-            year: "numeric", // e.g., 2025
-            month: "long", // e.g., January
-            day: "numeric", // e.g., 18
+            year: "numeric",
+            month: "long",
+            day: "numeric",
         });
 
         document.getElementById('model-owner').innerHTML = `<strong>Owner:</strong> ${userArray.name}`;
