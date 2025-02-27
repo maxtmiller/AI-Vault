@@ -1,4 +1,4 @@
-# [`UofTHacks 12`](https://dorahacks.io/buidl/21659)
+# [`AIVault`](https://dorahacks.io/buidl/21659)
 
 ## 💡 &nbsp;&nbsp;&nbsp;**Inspiration**&nbsp;&nbsp;&nbsp; 💡
 AI Vault was created to address the challenge of securely sharing and selling AI models, particularly for buyers. As AI adoption grows, we noticed a gap in platforms that allow organizations to showcase their models while ensuring data privacy and intellectual property protection. Our goal was to build a marketplace where companies can securely present their AI solutions, making it easier for businesses to find, purchase, and integrate the models they need securely and straightforwardly.
