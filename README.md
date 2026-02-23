@@ -1,12 +1,62 @@
-# [`AIVault`](https://dorahacks.io/buidl/21659)
 
-AI Vault is a secure marketplace for AI models that enables developers and companies to upload, manage, and sell their work without exposing underlying data or sensitive intellectual property. As AI adoption grows, a gap has emerged in platforms that allow organizations to showcase custom models while protecting privacy and preventing misuse. AI Vault addresses this by providing a controlled environment where AI solutions can be securely presented, discovered, purchased, and integrated. The platform focuses on protecting creators, safeguarding buyers, and ensuring responsible exchange of AI driven technology in a practical and accessible way.
+# [`AI Vault`](https://dorahacks.io/buidl/21659)
 
-## Technical Overview
-- Frontend: HTML, CSS, Tailwind CSS
-- Backend: Node.js, Javascript
-- Libraries: Express.js, Multer, Auth0
-- Database: MongoDB
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat\&logo=javascript\&logoColor=black) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat\&logo=node.js\&logoColor=white) ![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat\&logo=express\&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat\&logo=mongodb\&logoColor=white)
+
+**Secure marketplace for AI models — share, sell, and integrate AI without exposing sensitive data.**
+
+---
+
+## Preview
+
+<img width="1710" height="945" alt="aivault_cover" src="https://github.com/user-attachments/assets/c3ae7e00-3a31-4ca4-b459-843563257e05" />
+
+---
+
+## Features
+
+* Secure platform for uploading and managing AI models
+* Controlled environment for buyers to safely discover and integrate models
+* Protects intellectual property and sensitive data
+* Streamlined interface for uploading, browsing, and purchasing AI solutions
+
+---
+
+## Tech Stack
+
+* **Frontend:** HTML, CSS, Tailwind CSS
+* **Backend:** Node.js, JavaScript, Express.js
+* **Authentication & Security:** Auth0
+* **File Management:** Multer for handling uploads
+* **Database:** MongoDB
+
+---
+
+## Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone <repository-url>
+   cd AIVault
+   ```
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+3. Configure environment variables (Auth0, MongoDB connection)
+4. Start the server:
+
+   ```bash
+   npm start
+   ```
+5. Open your browser at `http://localhost:3000`
+
+---
 
 ## Next Steps
-A key next step for AI Vault is integrating Midnight’s security features to improve transaction protection. By using Midnight’s protocols, we can ensure that exchanges of AI models are secure and transactions are properly verified. This will help protect company and buyer data while keeping the platform focused on privacy.
+
+* Integrate **Midnight security protocols** to enhance transaction protection
+* Implement additional privacy features for buyers and creators
+* Expand the platform to support AI model versioning and access control
