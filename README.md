@@ -38,7 +38,7 @@
 
    ```bash
    git clone https://github.com/maxtmiller/AI-Vault.git
-   cd AIVault
+   cd AI-Vault
    ```
 2. Install dependencies:
 
